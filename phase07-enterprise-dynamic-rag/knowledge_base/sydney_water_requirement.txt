@@ -1,0 +1,19 @@
+REQ-SW001: Sydney Water Customer Bill Payment
+
+As a Sydney Water customer,
+I want to pay my water bill online,
+So that I can complete my payment without visiting a service centre.
+
+Acceptance Criteria:
+- Customer can enter a valid Sydney Water account number.
+- Customer can view the outstanding bill amount before payment.
+- Customer can select a payment method such as card or bank payment.
+- Customer must provide valid payment details.
+- Payment must be processed securely.
+- Payment confirmation must be displayed after successful payment.
+- Receipt number must be generated after successful payment.
+- Confirmation email or SMS should be sent to the customer.
+- If payment fails, the bill should remain unpaid.
+- If payment fails, the customer should see a clear error message.
+- Duplicate payment should be prevented where possible.
+- Customer should be able to return to the account dashboard after payment.
