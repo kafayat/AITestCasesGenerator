@@ -1,0 +1,1 @@
+User should be able to login using valid username and password.
