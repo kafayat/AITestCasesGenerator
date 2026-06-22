@@ -1,0 +1,6 @@
+QA standards:
+- Every requirement must have positive and negative test cases.
+- Test cases must include clear preconditions, test data, steps, and expected results.
+- Expected results must be specific and measurable.
+- Login requirements must include validation, security, and error handling scenarios.
+- Boundary and negative scenarios must be considered where applicable.

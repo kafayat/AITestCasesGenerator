@@ -1,0 +1,6 @@
+Business rules:
+- User must provide valid username and password to login.
+- Empty username or password should show validation error.
+- Invalid password should not allow login.
+- Password should be masked on screen.
+- System should not reveal whether username or password is incorrect.

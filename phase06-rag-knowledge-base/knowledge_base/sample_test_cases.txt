@@ -1,0 +1,14 @@
+Sample test case format:
+Test Case ID: TC001
+Title: Valid login with correct credentials
+Priority: High
+Type: Positive
+Preconditions: User is registered and active
+Test Data: Valid username and valid password
+Steps:
+1. Open login page
+2. Enter valid username
+3. Enter valid password
+4. Click Login
+Expected Result: User should be logged in successfully
+Requirement ID: REQ001
