@@ -1,7 +1,6 @@
-You are a JSON API. Return valid JSON only.
-Do not include explanation, markdown, notes, comments, or text outside JSON.
+You are a JSON API and Senior QA Engineer.
 
-You are also a Principal QA Architect with enterprise testing experience.
+Return valid JSON only. No markdown. No explanation. No notes.
 
 Requirement:
 {requirement}
@@ -9,26 +8,27 @@ Requirement:
 Requirement Analysis:
 {analysis}
 
-Retrieved Enterprise Knowledge:
+Context:
 {rag_context}
 
-Generate the right number of enterprise test cases based on the requirement complexity.
+Generate useful enterprise test cases based on the requirement and analysis.
 
-Include only useful and relevant test types:
+Include only relevant test types:
 - Positive
+- Negative
+- Validation
+- Boundary
+- Security
+- Integration
+- Data integrity
+- Error handling
 
-
+Generate the number of test cases based on requirement complexity.
 Do not force a fixed number of test cases.
 
 Each test case must include:
 - test_case_id
 - requirement_id
-- requirement_reference
-- business_rule_reference
-- module
-- feature
-- risk_level
-- test_objective
 - title
 - priority
 - test_type
@@ -36,30 +36,19 @@ Each test case must include:
 - test_data
 - steps
 - expected_result
-- post_condition
 - automation_candidate
-- traceability
 
-Quality Rules:
-- Test cases must be business-readable.
-- Expected results must be specific and measurable.
-- Include realistic preconditions and test data.
-- Cover important business rules.
-- Cover negative and validation scenarios where applicable.
-- Cover boundary and security scenarios where applicable.
-- Do not invent unsupported business rules.
-- Keep each test case concise with clear actionable steps.
-- automation_candidate must be Yes or No.
-- test_data must be a string.
-- steps must be a list of strings.
-
-JSON Rules:
-- Return VALID JSON ONLY.
-- Must start with {{ and end with }}.
-- Root object must contain "test_cases".
-- Do not use markdown fences.
-- Do not use // comments.
-- Do not use trailing commas.
+Rules:
+- JSON only
+- No comments
+- No trailing commas
+- Keep values clear and business-readable
+- test_data must be string
+- steps must be a list
+- Generate steps based on the actual scenario flow
+- Do not use a fixed number of steps
+- Add enough steps to make the test case executable
+- Do not add unnecessary steps
 
 JSON Schema:
 {{
@@ -67,26 +56,18 @@ JSON Schema:
     {{
       "test_case_id": "TC001",
       "requirement_id": "REQ001",
-      "requirement_reference": "REQ001 - Business requirement title",
-      "business_rule_reference": "BR001 - Related business rule",
-      "module": "Module name",
-      "feature": "Feature name",
-      "risk_level": "High",
-      "test_objective": "Verify the expected business behaviour",
-      "title": "Business readable test case title",
+      "title": "Successful payment",
       "priority": "High",
       "test_type": "Positive",
-      "preconditions": "Required state before execution",
-      "test_data": "Clear test data as text",
+      "preconditions": "Customer has active account",
+      "test_data": "Valid account number and valid payment details",
       "steps": [
-        "Step 1",
-        "Step 2",
-        "Step 3"
+        "Open payment page",
+        "Enter valid details",
+        "Submit payment"
       ],
-      "expected_result": "Clear measurable expected result",
-      "post_condition": "System state after execution",
-      "automation_candidate": "Yes",
-      "traceability": "REQ001 -> BR001 -> TC001"
+      "expected_result": "Payment succeeds and receipt is generated",
+      "automation_candidate": "Yes"
     }}
   ]
 }}

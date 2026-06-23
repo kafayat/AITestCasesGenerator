@@ -2,5 +2,8 @@ venv/
 __pycache__/
 *.pyc
 outputs/
+phase08-prompt-engineering-layer/vector_store/
+
+*.pyc
 .vscode/
 .env

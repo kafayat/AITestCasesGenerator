@@ -32,7 +32,7 @@ st.set_page_config(
 
 st.title("Enterprise AI Test Case Generator - Phase 8")
 st.write(
-    "Prompt Engineering Layer with Enterprise RAG, flexible test generation, JSON repair, multiple output formats, and reviewer agent."
+    "Fast Mode with RAG, prompt engineering, JSON repair, Excel export, and Word document export."
 )
 
 
@@ -46,11 +46,16 @@ selected_model = st.sidebar.selectbox(
     ]
 )
 
+fast_mode = st.sidebar.checkbox(
+    "Fast Mode",
+    value=True
+)
+
 top_k = st.sidebar.slider(
     "Number of RAG documents to retrieve",
     min_value=1,
-    max_value=10,
-    value=3
+    max_value=3,
+    value=1
 )
 
 run_reviewer = st.sidebar.checkbox(
@@ -159,12 +164,26 @@ if st.button("Generate Enterprise Test Cases"):
         st.text(rag_context)
 
 
-        with st.spinner("Analyzing requirement..."):
+        if fast_mode:
 
-            analysis = analyze_requirement(
-                llm,
-                requirement
-            )
+            st.info("Fast Mode enabled: skipping detailed Requirement Analyzer Agent.")
+
+            analysis = f"""
+Feature and Requirement Summary:
+{requirement[:800]}
+
+Relevant RAG Context:
+{rag_context[:800]}
+"""
+
+        else:
+
+            with st.spinner("Analyzing requirement..."):
+
+                analysis = analyze_requirement(
+                    llm,
+                    requirement
+                )
 
         st.subheader("Requirement Analysis")
         st.text(analysis)
@@ -174,9 +193,9 @@ if st.button("Generate Enterprise Test Cases"):
 
             raw_test_cases = generate_test_cases(
                 llm,
-                requirement,
-                analysis,
-                rag_context
+                requirement[:1200],
+                analysis[:1000],
+                rag_context[:1000]
             )
 
 
@@ -200,10 +219,8 @@ if st.button("Generate Enterprise Test Cases"):
                 indent=4
             )
 
-            json_path = "outputs/test_cases.json"
-
             with open(
-                json_path,
+                "outputs/test_cases.json",
                 "w",
                 encoding="utf-8"
             ) as file:
@@ -221,7 +238,7 @@ if st.button("Generate Enterprise Test Cases"):
             st.json(test_case_data)
 
 
-            if run_reviewer:
+            if run_reviewer and not fast_mode:
 
                 with st.spinner("Reviewing test cases..."):
 
@@ -254,13 +271,6 @@ if st.button("Generate Enterprise Test Cases"):
                 file.write(analysis)
 
 
-            st.download_button(
-                label="Download JSON",
-                data=final_json,
-                file_name="test_cases.json",
-                mime="application/json"
-            )
-
             with open(output_files["excel"], "rb") as file:
                 excel_data = file.read()
 
@@ -271,44 +281,22 @@ if st.button("Generate Enterprise Test Cases"):
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
 
-            with open(output_files["csv"], "rb") as file:
-                csv_data = file.read()
+            with open(output_files["word"], "rb") as file:
+                word_data = file.read()
 
             st.download_button(
-                label="Download CSV",
-                data=csv_data,
-                file_name="test_cases.csv",
-                mime="text/csv"
-            )
-
-            with open(output_files["markdown"], "rb") as file:
-                markdown_data = file.read()
-
-            st.download_button(
-                label="Download Markdown",
-                data=markdown_data,
-                file_name="test_cases.md",
-                mime="text/markdown"
-            )
-
-            with open(output_files["html"], "rb") as file:
-                html_data = file.read()
-
-            st.download_button(
-                label="Download HTML Report",
-                data=html_data,
-                file_name="test_cases.html",
-                mime="text/html"
+                label="Download Word Document",
+                data=word_data,
+                file_name="test_cases.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
 
 
         except json.JSONDecodeError as e:
 
             st.error("AI returned invalid JSON even after repair.")
-
             st.subheader("Raw AI Response")
             st.text(raw_test_cases)
-
             st.subheader("JSON Error")
             st.text(str(e))
 
@@ -316,9 +304,7 @@ if st.button("Generate Enterprise Test Cases"):
         except ValidationError as e:
 
             st.error("JSON validation failed.")
-
             st.subheader("Raw AI Response")
             st.text(raw_test_cases)
-
             st.subheader("Validation Error")
             st.text(str(e))
