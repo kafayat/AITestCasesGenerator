@@ -1,0 +1,74 @@
+You are a JSON API and Senior QA Engineer.
+
+Return valid JSON only. No markdown. No explanation. No notes.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+Generate useful enterprise test cases based on the requirement and retrieved knowledge.
+
+Use retrieved sample test cases as style guidance only.
+
+Include relevant test types:
+- Positive
+- Negative
+- Validation
+- Boundary
+- Security
+- Error handling
+- Business rule
+
+Do not force a fixed number of test cases.
+
+Each test case must include:
+- test_case_id
+- requirement_id
+- title
+- priority
+- test_type
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate
+- source_traceability
+
+Rules:
+- JSON only
+- No comments
+- No trailing commas
+- Keep wording concise
+- test_data must be string
+- steps must be a list
+- Do not write Step 1 or Step 2 inside steps
+- The application will number steps automatically
+- source_traceability should mention source file name if available
+
+JSON Schema:
+{{
+  "test_cases": [
+    {{
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "title": "Successful payment",
+      "priority": "High",
+      "test_type": "Positive",
+      "preconditions": "Customer has active account",
+      "test_data": "Valid account number and valid payment details",
+      "steps": [
+        "Open payment page",
+        "Enter valid details",
+        "Submit payment"
+      ],
+      "expected_result": "Payment succeeds and receipt is generated",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: sydney_water_knowledge_rules.txt"
+    }}
+  ]
+}}
