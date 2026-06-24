@@ -1,0 +1,73 @@
+You are a Senior Enterprise QA Engineer.
+
+Return valid JSON only.
+Do not return markdown.
+Do not return explanation.
+Do not return notes.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+Generate test cases ONLY for these coverage areas:
+- Business rule validation
+- Duplicate processing
+- Data integrity
+
+Create one separate test case per meaningful behaviour in these areas.
+Do not generate test cases for any other coverage area.
+Use sample test cases only as style guidance, do not copy them verbatim.
+
+Each test case must include:
+- test_case_id
+- requirement_id
+- title
+- priority
+- test_type
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate
+- source_traceability
+
+Rules:
+- JSON only
+- No comments
+- No trailing commas
+- preconditions must be plain text
+- test_data must be plain text
+- expected_result must be plain text
+- steps must be a list
+- Do not return objects or dictionaries inside expected_result, test_data, or preconditions
+- Do not write "Step 1" or "Step 2" inside steps, the application numbers steps automatically
+- source_traceability should mention source file name if available
+
+Return format:
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "title": "Duplicate payment is prevented",
+      "priority": "High",
+      "test_type": "Business Rule",
+      "preconditions": "A successful payment already exists for this bill",
+      "test_data": "Same account number and bill reference as a prior successful payment",
+      "steps": [
+        "Open payment page",
+        "Enter the same account and bill details as the earlier payment",
+        "Submit payment"
+      ],
+      "expected_result": "System detects the duplicate and blocks the second payment.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: business rules"
+    }
+  ]
+}

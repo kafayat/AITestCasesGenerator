@@ -1,0 +1,99 @@
+You are a Senior Enterprise QA Engineer.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+Step 1 - Before writing any JSON, mentally list every distinct behaviour, business rule, validation, and acceptance criterion present in the Requirement, Analysis, and RAG Context above.
+
+Step 2 - For each coverage area below, generate one separate test case ONLY if something in the input actually relates to it. Skip an area only if nothing in the input supports it. Do not invent behaviour that isn't implied by the input.
+
+Coverage areas:
+- Happy path / successful flow
+- Invalid input
+- Missing mandatory data
+- Business rule validation
+- Boundary condition
+- Duplicate processing
+- Failed transaction or system failure
+- Confirmation or notification
+- Receipt or reference generation
+- Security or sensitive data handling
+- Data integrity
+- Error handling
+
+Do not use a fixed number of test cases. Do not generate only one test case when the input contains multiple behaviours. Coverage is more important than quantity. Use sample test cases only as style guidance — do not copy them verbatim, and do not base every test case on only one sample.
+
+Each test case must include exactly these fields:
+- test_case_id
+- requirement_id
+- coverage_area (must be one of the 12 coverage areas listed above, written exactly as shown)
+- title
+- priority (must be exactly one of: "High", "Medium", "Low")
+- test_type (must be exactly one of: "Positive", "Negative", "Boundary", "Business Rule", "Security", "Error Handling")
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate (must be exactly one of: "Yes", "No")
+- source_traceability
+
+Field rules:
+- preconditions, test_data, and expected_result must always be plain text strings — never objects, arrays, or nested JSON.
+- steps must be a list of plain text strings. Do not include "Step 1", "Step 2", etc. — the application numbers steps automatically.
+- source_traceability should name the source file if one is available in the RAG Context, otherwise use "Source: requirement".
+- No comments, no trailing commas.
+
+Return format:
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "coverage_area": "Happy path / successful flow",
+      "title": "Successful payment with valid account and card details",
+      "priority": "High",
+      "test_type": "Positive",
+      "preconditions": "Customer has active account",
+      "test_data": "Valid account number and valid payment details",
+      "steps": [
+        "Open payment page",
+        "Enter valid account number",
+        "View outstanding bill amount",
+        "Select payment method",
+        "Enter valid payment details",
+        "Submit payment"
+      ],
+      "expected_result": "Payment succeeds, receipt is generated, and confirmation is displayed.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: business rules"
+    },
+    {
+      "test_case_id": "TC002",
+      "requirement_id": "REQ001",
+      "coverage_area": "Security or sensitive data handling",
+      "title": "Payment error does not expose sensitive card details",
+      "priority": "High",
+      "test_type": "Security",
+      "preconditions": "Customer is on the payment page with a payment in progress",
+      "test_data": "Valid account number, invalid or declined card details",
+      "steps": [
+        "Open payment page",
+        "Enter valid account number",
+        "Enter invalid card details",
+        "Submit payment"
+      ],
+      "expected_result": "Payment is rejected with a clear error message that does not display or log sensitive card or banking details.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: business rules"
+    }
+  ]
+}
+
+Return valid JSON only. No markdown, no explanation, no notes — output must start with { and end with }.

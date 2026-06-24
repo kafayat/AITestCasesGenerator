@@ -1,0 +1,73 @@
+You are a Senior Enterprise QA Engineer.
+
+Return valid JSON only.
+Do not return markdown.
+Do not return explanation.
+Do not return notes.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+Generate test cases ONLY for these coverage areas:
+- Happy path / successful flow
+- Confirmation or notification
+- Receipt or reference generation
+
+Create one separate test case per meaningful behaviour in these areas.
+Do not generate test cases for any other coverage area.
+Use sample test cases only as style guidance, do not copy them verbatim.
+
+Each test case must include:
+- test_case_id
+- requirement_id
+- title
+- priority
+- test_type
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate
+- source_traceability
+
+Rules:
+- JSON only
+- No comments
+- No trailing commas
+- preconditions must be plain text
+- test_data must be plain text
+- expected_result must be plain text
+- steps must be a list
+- Do not return objects or dictionaries inside expected_result, test_data, or preconditions
+- Do not write "Step 1" or "Step 2" inside steps, the application numbers steps automatically
+- source_traceability should mention source file name if available
+
+Return format:
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "title": "Successful payment",
+      "priority": "High",
+      "test_type": "Positive",
+      "preconditions": "Customer has active account",
+      "test_data": "Valid account number and valid payment details",
+      "steps": [
+        "Open payment page",
+        "Enter valid account number",
+        "Submit payment"
+      ],
+      "expected_result": "Payment succeeds, receipt is generated, and confirmation is displayed.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: business rules"
+    }
+  ]
+}
