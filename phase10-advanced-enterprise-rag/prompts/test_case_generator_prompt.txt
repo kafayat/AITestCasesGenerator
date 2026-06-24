@@ -1,6 +1,10 @@
 You are a JSON API and Senior QA Engineer.
 
-Return valid JSON only. No markdown. No explanation. No notes.
+Return valid JSON only.
+Do not return markdown.
+Do not return explanation.
+Do not return notes.
+Do not return only one test case unless the requirement has only one simple acceptance criterion.
 
 Requirement:
 {requirement}
@@ -11,20 +15,18 @@ Requirement Analysis:
 RAG Context:
 {rag_context}
 
-Generate useful enterprise test cases based on the requirement and retrieved knowledge.
-
-Use retrieved sample test cases as style guidance only.
-
-Include relevant test types:
-- Positive
-- Negative
-- Validation
-- Boundary
-- Security
+Generate enterprise test cases based on full coverage of:
+- Acceptance criteria
+- Business rules
+- Validation rules
 - Error handling
-- Business rule
+- Security concerns
+- Duplicate processing risks
+- Confirmation and receipt rules
 
-Do not force a fixed number of test cases.
+Do not use a fixed number of test cases.
+Do not stop after the first scenario.
+Generate enough test cases to cover the requirement properly.
 
 Each test case must include:
 - test_case_id
@@ -43,17 +45,17 @@ Rules:
 - JSON only
 - No comments
 - No trailing commas
-- Keep wording concise
 - test_data must be string
-- steps must be a list
+- steps must be a list of clear executable actions
+- Each test case must have at least 2 meaningful steps unless it is a system-only validation
 - Do not write Step 1 or Step 2 inside steps
 - The application will number steps automatically
 - source_traceability should mention source file name if available
 
 JSON Schema:
-{{
+{
   "test_cases": [
-    {{
+    {
       "test_case_id": "TC001",
       "requirement_id": "REQ001",
       "title": "Successful payment",
@@ -63,12 +65,15 @@ JSON Schema:
       "test_data": "Valid account number and valid payment details",
       "steps": [
         "Open payment page",
-        "Enter valid details",
+        "Enter valid account number",
+        "View outstanding bill amount",
+        "Select payment method",
+        "Enter valid payment details",
         "Submit payment"
       ],
-      "expected_result": "Payment succeeds and receipt is generated",
+      "expected_result": "Payment succeeds, receipt is generated, and confirmation is displayed",
       "automation_candidate": "Yes",
       "source_traceability": "Source: sydney_water_knowledge_rules.txt"
-    }}
+    }
   ]
-}}
+}
