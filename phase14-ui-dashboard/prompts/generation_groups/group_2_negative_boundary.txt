@@ -1,0 +1,90 @@
+You are a Senior Enterprise QA Engineer.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+You are ONLY responsible for these 3 coverage areas. Do not generate test cases for any other coverage area, even if the requirement or RAG context strongly suggests one - another QA engineer is covering those separately:
+- Invalid input
+- Missing mandatory data
+- Boundary condition
+
+Step 1 - Mentally list every distinct invalid-input, missing-data, and boundary scenario implied by the Requirement, Analysis, and RAG Context above.
+
+Step 2 - Generate one separate test case for each scenario you found. Do not use a fixed number of test cases. If the input only supports one scenario in these 3 areas, generate one test case - do not pad with unrelated scenarios.
+
+IMPORTANT - the worked example below is from a COMPLETELY DIFFERENT, UNRELATED business domain. It is shown ONLY so you can see the required JSON structure and field formatting. You must NEVER reuse its wording, entity names, field names like "card" or "payment", or scenario content. Every test case you generate must be built entirely from the Requirement, Analysis, and RAG Context above - not from the example. If the example's domain does not match the Requirement's domain, that is expected and correct; do not try to make them match.
+
+Any sample test cases in the RAG Context are style guidance only. Do not copy a sample's wording or values - invent plausible values from the actual requirement domain and phrase the title and steps in your own words.
+
+Each test case must include exactly these fields:
+- test_case_id
+- requirement_id
+- coverage_area (must be exactly one of: "Invalid input", "Missing mandatory data", "Boundary condition")
+- title
+- priority (must be exactly one of: "High", "Medium", "Low")
+- test_type (must be exactly one of: "Positive", "Negative", "Boundary", "Business Rule", "Security", "Error Handling")
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate (must be exactly one of: "Yes", "No")
+- source_traceability
+
+Field rules:
+- preconditions, test_data, and expected_result must always be plain text strings written as natural English sentences - never objects, arrays, key-value pairs, or nested JSON of any kind, and never left empty. If there are multiple data values, combine them into one sentence (for example: "The record has commodity Dairy and destination country Australia." - NOT a JSON object with those same keys).
+- steps must be a list of plain text strings. Do not include "Step 1", "Step 2", etc. - the application numbers steps automatically.
+- preconditions must describe the actual state of the system/record before the test, and must be consistent with the steps and expected_result that follow - never contradict your own steps (e.g. do not say preconditions are "valid" if the steps then enter invalid data).
+- source_traceability must never be left empty. If no specific source file applies, write exactly: "Source: requirement".
+- No comments, no trailing commas.
+- Every test case in this group must use genuinely invalid, missing, or boundary-violating data - never a valid value. Do not write a test case that uses valid data and then hedges the expected_result with "...and displays an error if it does not match" - that is testing nothing. If test_type is "Negative" or "Boundary", test_data must contain a specific invalid/missing/out-of-range value, and expected_result must commit to a single definite outcome (a specific rejection or validation error), not a conditional "if/else" statement.
+
+Worked example (UNRELATED DOMAIN - structure only, do not reuse content):
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "coverage_area": "Invalid input",
+      "title": "Submission is rejected when a required reference value is invalid",
+      "priority": "High",
+      "test_type": "Negative",
+      "preconditions": "User is on the entry screen with a record ready to submit",
+      "test_data": "An invalid value in a key reference field",
+      "steps": [
+        "Open the main entry screen",
+        "Enter an invalid value in the key reference field",
+        "Submit the request"
+      ],
+      "expected_result": "The system rejects the submission and displays a validation error without creating a record.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    },
+    {
+      "test_case_id": "TC002",
+      "requirement_id": "REQ001",
+      "coverage_area": "Missing mandatory data",
+      "title": "Submission cannot proceed when a mandatory field is left empty",
+      "priority": "Medium",
+      "test_type": "Negative",
+      "preconditions": "User is on the entry screen with one mandatory field left empty",
+      "test_data": "All required fields completed except one mandatory field",
+      "steps": [
+        "Open the main entry screen",
+        "Leave one mandatory field empty",
+        "Attempt to submit"
+      ],
+      "expected_result": "The system displays a mandatory field error and does not proceed with submission.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    }
+  ]
+}
+
+Return valid JSON only. No markdown, no explanation, no notes - output must start with { and end with }.

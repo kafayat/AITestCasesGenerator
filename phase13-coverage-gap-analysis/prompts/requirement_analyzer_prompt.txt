@@ -1,0 +1,10 @@
+Summarize this requirement briefly for QA test generation.
+
+Requirement:
+{requirement}
+
+Return:
+Feature:
+Business Rules:
+Validations:
+Risks:

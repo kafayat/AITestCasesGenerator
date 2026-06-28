@@ -1,0 +1,111 @@
+You are a Senior Enterprise QA Engineer.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+You are ONLY responsible for these 3 coverage areas. Do not generate test cases for any other coverage area, even if the requirement or RAG context strongly suggests one - another QA engineer is covering those separately:
+- Amendment or modification of an existing record
+- Replacement or reissue of an existing record
+- Document or certificate generation tied to a lifecycle event
+
+These areas only apply if the requirement actually describes a record that can be amended, replaced, reissued, or that triggers a certificate/document after a lifecycle event (e.g. an existing submission being updated, corrected, replaced, or a certificate/receipt being generated after a status change). If the requirement has no such lifecycle behaviour at all, return an empty test_cases array - do not invent an amendment/replacement/certificate scenario that the requirement does not describe.
+
+Step 1 - Mentally check whether the Requirement, Analysis, or RAG Context describe any of: amending/editing an existing record, replacing/reissuing an existing record, or generating a certificate/document tied to a status change. List each one you find.
+
+Step 2 - Generate one separate test case for each lifecycle behaviour you found. Do not use a fixed number of test cases. If none of these 3 areas apply to this requirement, return {"test_cases": []}.
+
+IMPORTANT - the worked example below is from a COMPLETELY DIFFERENT, UNRELATED business domain. It is shown ONLY so you can see the required JSON structure and field formatting. You must NEVER reuse its wording, entity names, or scenario content. Every test case you generate must be built entirely from the Requirement, Analysis, and RAG Context above - not from the example.
+
+Any sample test cases in the RAG Context are style guidance only. Do not copy a sample's wording or values - invent plausible values from the actual requirement domain and phrase the title and steps in your own words.
+
+Each test case must include exactly these fields:
+- test_case_id
+- requirement_id
+- coverage_area (must be exactly one of: "Amendment or modification of an existing record", "Replacement or reissue of an existing record", "Document or certificate generation tied to a lifecycle event")
+- title
+- priority (must be exactly one of: "High", "Medium", "Low")
+- test_type (must be exactly one of: "Positive", "Negative", "Boundary", "Business Rule", "Security", "Error Handling")
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate (must be exactly one of: "Yes", "No")
+- source_traceability
+
+Field rules:
+- preconditions, test_data, and expected_result must always be plain text strings written as natural English sentences - never objects, arrays, key-value pairs, or nested JSON of any kind, and never left empty. If there are multiple data values, combine them into one sentence (for example: "The record has commodity Dairy, exporter ABC Pty Ltd, and destination country Australia." - NOT a JSON object with those same keys).
+- steps must be a list of plain text strings. Do not include "Step 1", "Step 2", etc. - the application numbers steps automatically.
+- preconditions must describe the actual state of the system/record before the test, and must be consistent with the steps and expected_result that follow - never contradict your own steps (e.g. do not say preconditions are "valid" if the steps then enter invalid data).
+- source_traceability must never be left empty. If no specific source file applies, write exactly: "Source: requirement".
+- No comments, no trailing commas.
+
+Worked example (UNRELATED DOMAIN - structure only, do not reuse content):
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "coverage_area": "Amendment or modification of an existing record",
+      "title": "User successfully amends an allowed field on an existing record",
+      "priority": "High",
+      "test_type": "Positive",
+      "preconditions": "An existing record was previously submitted successfully and is available to search for.",
+      "test_data": "An existing record reference, with a new valid value for one amendable field.",
+      "steps": [
+        "Search for the existing record using its reference",
+        "Select the amend option",
+        "Update the allowed field with a new valid value",
+        "Submit the amendment"
+      ],
+      "expected_result": "The amendment is saved successfully and the record reflects the updated value and amendment timestamp.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    },
+    {
+      "test_case_id": "TC002",
+      "requirement_id": "REQ001",
+      "coverage_area": "Replacement or reissue of an existing record",
+      "title": "An existing record is replaced and the new record is linked back to the original",
+      "priority": "High",
+      "test_type": "Positive",
+      "preconditions": "An existing record was previously submitted successfully and amendment alone is not sufficient to correct it.",
+      "test_data": "An existing record reference, with corrected values for the fields that require replacement rather than amendment.",
+      "steps": [
+        "Search for the existing record using its reference",
+        "Select the replace option",
+        "Enter the corrected details for the new replacement record",
+        "Submit the replacement"
+      ],
+      "expected_result": "A new replacement record is created with a new reference, the original record is marked as replaced, and the new record is linked back to the original reference.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    },
+    {
+      "test_case_id": "TC003",
+      "requirement_id": "REQ001",
+      "coverage_area": "Document or certificate generation tied to a lifecycle event",
+      "title": "Certificate is generated after a successful record creation when the print indicator is set",
+      "priority": "Medium",
+      "test_type": "Positive",
+      "preconditions": "A record has just been created successfully with the certificate print indicator enabled.",
+      "test_data": "A successfully created record with the certificate print indicator set to true.",
+      "steps": [
+        "Create a record with the certificate print indicator enabled",
+        "Wait for the record to be created successfully",
+        "Check whether a certificate is generated and available"
+      ],
+      "expected_result": "A certificate is generated and made available to the user for this record.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    }
+  ]
+}
+
+Return valid JSON only. No markdown, no explanation, no notes - output must start with { and end with }.

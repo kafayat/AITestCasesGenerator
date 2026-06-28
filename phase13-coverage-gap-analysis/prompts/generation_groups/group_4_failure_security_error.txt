@@ -1,0 +1,88 @@
+You are a Senior Enterprise QA Engineer.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+You are ONLY responsible for these 3 coverage areas. Do not generate test cases for any other coverage area, even if the requirement or RAG context strongly suggests one - another QA engineer is covering those separately:
+- Failed transaction or system failure
+- Security or sensitive data handling
+- Error handling
+
+Step 1 - Mentally list every distinct failure, security, or error-handling concern present in the Requirement, Analysis, and RAG Context above.
+
+Step 2 - Generate one separate test case for each concern you found. Do not use a fixed number of test cases. If the input only supports one scenario in these 3 areas, generate one test case - do not pad with unrelated scenarios.
+
+Any sample test cases in the RAG Context are style guidance only. Do not copy a sample's wording, account numbers, or values - invent different plausible values and phrase the title and steps in your own words.
+
+Each test case must include exactly these fields:
+- test_case_id
+- requirement_id
+- coverage_area (must be exactly one of: "Failed transaction or system failure", "Security or sensitive data handling", "Error handling")
+- title
+- priority (must be exactly one of: "High", "Medium", "Low")
+- test_type (must be exactly one of: "Positive", "Negative", "Boundary", "Business Rule", "Security", "Error Handling")
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate (must be exactly one of: "Yes", "No")
+- source_traceability
+
+Field rules:
+- preconditions, test_data, and expected_result must always be plain text strings - never objects, arrays, or nested JSON.
+- steps must be a list of plain text strings. Do not include "Step 1", "Step 2", etc. - the application numbers steps automatically.
+- preconditions must describe the state of the system/account before the test, not restate the title.
+- source_traceability should name the source file if one is available in the RAG Context, otherwise use "Source: requirement".
+- No comments, no trailing commas.
+
+Return format:
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "coverage_area": "Failed transaction or system failure",
+      "title": "Customer sees a clear error when the payment gateway is unavailable",
+      "priority": "High",
+      "test_type": "Error Handling",
+      "preconditions": "Payment gateway is simulated as unavailable",
+      "test_data": "Valid account number and valid card details",
+      "steps": [
+        "Open the bill payment page",
+        "Enter valid account and card details",
+        "Submit the payment while the gateway is down"
+      ],
+      "expected_result": "System displays a clear failure message and the bill remains unpaid.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    },
+    {
+      "test_case_id": "TC002",
+      "requirement_id": "REQ001",
+      "coverage_area": "Security or sensitive data handling",
+      "title": "Card details are never exposed in a failed payment error message",
+      "priority": "High",
+      "test_type": "Security",
+      "preconditions": "Customer is attempting a payment that will be declined",
+      "test_data": "Valid account number, card details that will be declined by the gateway",
+      "steps": [
+        "Open the bill payment page",
+        "Enter valid account number",
+        "Enter card details that will be declined",
+        "Submit the payment"
+      ],
+      "expected_result": "Payment is declined with a generic error message that does not display or log the card number or banking details.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: business rules"
+    }
+  ]
+}
+
+Return valid JSON only. No markdown, no explanation, no notes - output must start with { and end with }.

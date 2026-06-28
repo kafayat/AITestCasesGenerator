@@ -1,0 +1,91 @@
+You are a Senior Enterprise QA Engineer.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+You are ONLY responsible for these 3 coverage areas. Do not generate test cases for any other coverage area, even if the requirement or RAG context strongly suggests one - another QA engineer is covering those separately:
+- Failed transaction or system failure
+- Security or sensitive data handling
+- Error handling
+
+Step 1 - Mentally list every distinct failure, security, or error-handling concern present in the Requirement, Analysis, and RAG Context above.
+
+IMPORTANT - if the requirement explicitly NAMES "security" or "access control" as a required coverage area (for example in a list of coverage areas the test generator should create test cases for), but does not describe the specific security behaviour in detail, do NOT skip it just because no detailed use case exists. Instead, infer one reasonable, generic security test case from standard practice for this kind of system - for example: only authorised roles/actors named in the requirement (look for an "Actors" or "Roles" section) should be able to perform the action, sensitive data should not be exposed in error messages, or access should require authentication. Base it on the actors/roles actually named in the requirement, not on a different domain's actors.
+
+Step 2 - Generate one separate test case for each concern you found. Do not use a fixed number of test cases. If the input only supports one scenario in these 3 areas, generate one test case - do not pad with unrelated scenarios.
+
+IMPORTANT - the worked example below is from a COMPLETELY DIFFERENT, UNRELATED business domain. It is shown ONLY so you can see the required JSON structure and field formatting. You must NEVER reuse its wording, entity names, field names like "card" or "payment", or scenario content. Every test case you generate must be built entirely from the Requirement, Analysis, and RAG Context above - not from the example. If the example's domain does not match the Requirement's domain, that is expected and correct; do not try to make them match.
+
+Any sample test cases in the RAG Context are style guidance only. Do not copy a sample's wording or values - invent plausible values from the actual requirement domain and phrase the title and steps in your own words.
+
+Each test case must include exactly these fields:
+- test_case_id
+- requirement_id
+- coverage_area (must be exactly one of: "Failed transaction or system failure", "Security or sensitive data handling", "Error handling")
+- title
+- priority (must be exactly one of: "High", "Medium", "Low")
+- test_type (must be exactly one of: "Positive", "Negative", "Boundary", "Business Rule", "Security", "Error Handling")
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate (must be exactly one of: "Yes", "No")
+- source_traceability
+
+Field rules:
+- preconditions, test_data, and expected_result must always be plain text strings written as natural English sentences - never objects, arrays, key-value pairs, or nested JSON of any kind, and never left empty. If there are multiple data values, combine them into one sentence (for example: "The record has commodity Dairy and destination country Australia." - NOT a JSON object with those same keys).
+- steps must be a list of plain text strings. Do not include "Step 1", "Step 2", etc. - the application numbers steps automatically.
+- preconditions must describe the actual state of the system/record before the test, and must be consistent with the steps and expected_result that follow - never contradict your own steps (e.g. do not say preconditions are "valid" if the steps then enter invalid data).
+- source_traceability must never be left empty. If no specific source file applies, write exactly: "Source: requirement".
+- No comments, no trailing commas.
+
+Worked example (UNRELATED DOMAIN - structure only, do not reuse content):
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "coverage_area": "Failed transaction or system failure",
+      "title": "User sees a clear error when a dependent service is unavailable during submission",
+      "priority": "High",
+      "test_type": "Error Handling",
+      "preconditions": "A downstream service the system depends on is simulated as unavailable",
+      "test_data": "Valid submission data",
+      "steps": [
+        "Open the main entry screen",
+        "Enter valid data",
+        "Submit the request while the dependent service is down"
+      ],
+      "expected_result": "The system displays a clear failure message and no record is created.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    },
+    {
+      "test_case_id": "TC002",
+      "requirement_id": "REQ001",
+      "coverage_area": "Security or sensitive data handling",
+      "title": "Sensitive identifying details are never exposed in a failure error message",
+      "priority": "High",
+      "test_type": "Security",
+      "preconditions": "A submission is about to be rejected by the system",
+      "test_data": "Valid data that will trigger a rejection",
+      "steps": [
+        "Open the main entry screen",
+        "Enter data that will be rejected",
+        "Submit the request"
+      ],
+      "expected_result": "The request is rejected with a generic error message that does not display or log sensitive identifying details.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    }
+  ]
+}
+
+Return valid JSON only. No markdown, no explanation, no notes - output must start with { and end with }.

@@ -1,0 +1,89 @@
+You are a Senior Enterprise QA Engineer.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+You are ONLY responsible for these 3 coverage areas. Do not generate test cases for any other coverage area, even if the requirement or RAG context strongly suggests one - another QA engineer is covering those separately:
+- Invalid input
+- Missing mandatory data
+- Boundary condition
+
+Step 1 - Mentally list every distinct invalid-input, missing-data, and boundary scenario implied by the Requirement, Analysis, and RAG Context above.
+
+Step 2 - Generate one separate test case for each scenario you found. Do not use a fixed number of test cases. If the input only supports one scenario in these 3 areas, generate one test case - do not pad with unrelated scenarios.
+
+Any sample test cases in the RAG Context are style guidance only. Do not copy a sample's wording, account numbers, or values - invent different plausible values and phrase the title and steps in your own words.
+
+Each test case must include exactly these fields:
+- test_case_id
+- requirement_id
+- coverage_area (must be exactly one of: "Invalid input", "Missing mandatory data", "Boundary condition")
+- title
+- priority (must be exactly one of: "High", "Medium", "Low")
+- test_type (must be exactly one of: "Positive", "Negative", "Boundary", "Business Rule", "Security", "Error Handling")
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate (must be exactly one of: "Yes", "No")
+- source_traceability
+
+Field rules:
+- preconditions, test_data, and expected_result must always be plain text strings - never objects, arrays, or nested JSON.
+- steps must be a list of plain text strings. Do not include "Step 1", "Step 2", etc. - the application numbers steps automatically.
+- preconditions must describe the state of the system/account before the test, not restate the title.
+- source_traceability should name the source file if one is available in the RAG Context, otherwise use "Source: requirement".
+- No comments, no trailing commas.
+
+Return format:
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "coverage_area": "Invalid input",
+      "title": "Payment is rejected when card details are invalid",
+      "priority": "High",
+      "test_type": "Negative",
+      "preconditions": "Customer has a valid account with an outstanding bill displayed",
+      "test_data": "Valid account number, expired card number",
+      "steps": [
+        "Open the bill payment page",
+        "Enter the valid account number",
+        "Select card as the payment method",
+        "Enter an expired card number",
+        "Submit the payment"
+      ],
+      "expected_result": "System rejects the payment and displays a validation error without charging the customer.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    },
+    {
+      "test_case_id": "TC002",
+      "requirement_id": "REQ001",
+      "coverage_area": "Missing mandatory data",
+      "title": "Customer cannot view bill details without entering an account number",
+      "priority": "Medium",
+      "test_type": "Negative",
+      "preconditions": "Customer is on the bill payment page with no account number entered",
+      "test_data": "Empty account number field",
+      "steps": [
+        "Open the bill payment page",
+        "Leave the account number field empty",
+        "Attempt to continue"
+      ],
+      "expected_result": "System displays a mandatory field error and does not show any bill amount.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: business rules"
+    }
+  ]
+}
+
+Return valid JSON only. No markdown, no explanation, no notes - output must start with { and end with }.

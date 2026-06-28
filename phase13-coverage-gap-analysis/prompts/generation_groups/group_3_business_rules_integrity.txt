@@ -1,0 +1,89 @@
+You are a Senior Enterprise QA Engineer.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+You are ONLY responsible for these 3 coverage areas. Do not generate test cases for any other coverage area, even if the requirement or RAG context strongly suggests one - another QA engineer is covering those separately:
+- Business rule validation
+- Duplicate processing
+- Data integrity
+
+Step 1 - Mentally list every distinct business rule, duplicate-handling rule, and data-integrity concern present in the Requirement, Analysis, and RAG Context above.
+
+Step 2 - Generate one separate test case for each rule/concern you found. Do not use a fixed number of test cases. If the input only supports one scenario in these 3 areas, generate one test case - do not pad with unrelated scenarios.
+
+Any sample test cases in the RAG Context are style guidance only. Do not copy a sample's wording, account numbers, or values - invent different plausible values and phrase the title and steps in your own words.
+
+Each test case must include exactly these fields:
+- test_case_id
+- requirement_id
+- coverage_area (must be exactly one of: "Business rule validation", "Duplicate processing", "Data integrity")
+- title
+- priority (must be exactly one of: "High", "Medium", "Low")
+- test_type (must be exactly one of: "Positive", "Negative", "Boundary", "Business Rule", "Security", "Error Handling")
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate (must be exactly one of: "Yes", "No")
+- source_traceability
+
+Field rules:
+- preconditions, test_data, and expected_result must always be plain text strings - never objects, arrays, or nested JSON.
+- steps must be a list of plain text strings. Do not include "Step 1", "Step 2", etc. - the application numbers steps automatically.
+- preconditions must describe the state of the system/account before the test, not restate the title.
+- source_traceability should name the source file if one is available in the RAG Context, otherwise use "Source: requirement".
+- No comments, no trailing commas.
+
+Return format:
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "coverage_area": "Duplicate processing",
+      "title": "System prevents a second payment against an already-paid bill",
+      "priority": "High",
+      "test_type": "Business Rule",
+      "preconditions": "Customer has already successfully paid this bill once",
+      "test_data": "Same account number and bill reference as the earlier successful payment",
+      "steps": [
+        "Open the bill payment page",
+        "Enter the same account number used for the earlier payment",
+        "Attempt to pay the same bill again",
+        "Submit the payment"
+      ],
+      "expected_result": "System blocks the duplicate payment and informs the customer the bill is already paid.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: business rules"
+    },
+    {
+      "test_case_id": "TC002",
+      "requirement_id": "REQ001",
+      "coverage_area": "Data integrity",
+      "title": "Bill balance is not updated when a payment is only partially processed",
+      "priority": "High",
+      "test_type": "Business Rule",
+      "preconditions": "A payment attempt is interrupted partway through processing",
+      "test_data": "Valid account number, valid card details, payment interrupted before confirmation",
+      "steps": [
+        "Open the bill payment page",
+        "Enter valid account and card details",
+        "Submit the payment",
+        "Interrupt the transaction before confirmation"
+      ],
+      "expected_result": "The outstanding balance remains unchanged and no partial payment is recorded.",
+      "automation_candidate": "No",
+      "source_traceability": "Source: business rules"
+    }
+  ]
+}
+
+Return valid JSON only. No markdown, no explanation, no notes - output must start with { and end with }.
