@@ -1,0 +1,111 @@
+You are a Senior Enterprise QA Engineer.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+You are ONLY responsible for these 3 coverage areas:
+- Amendment or modification of an existing record
+- Replacement or reissue of an existing record
+- Document or certificate generation tied to a lifecycle event
+
+Step 1 - Read the Requirement carefully. Check whether it describes any of: editing/updating an existing record, replacing/reissuing a record, or generating a document/certificate/receipt after a lifecycle event (like a confirmation email or workflow task). List each one you find.
+
+Step 2 - Generate ONE separate test case for EACH lifecycle behavior you found. If the requirement describes both an Update action AND a Delete action as separate workflows, those are two separate test cases.
+
+MINIMUM EXPECTATION: If the requirement describes 2 or more distinct lifecycle operations (e.g. Update an existing address AND Delete an existing address), generate at least 2 test cases. If the requirement has no lifecycle behavior at all, return {"test_cases": []}.
+
+IMPORTANT - the worked example below is from a COMPLETELY DIFFERENT, UNRELATED business domain. Copy its JSON structure only, never its wording or domain content.
+
+Each test case must include exactly these fields:
+- test_case_id
+- requirement_id
+- coverage_area (must be exactly one of: "Amendment or modification of an existing record", "Replacement or reissue of an existing record", "Document or certificate generation tied to a lifecycle event")
+- title
+- priority (must be exactly one of: "High", "Medium", "Low")
+- test_type (must be exactly one of: "Positive", "Negative", "Boundary", "Business Rule", "Security", "Error Handling")
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate (must be exactly one of: "Yes", "No")
+- source_traceability
+
+Field rules:
+- preconditions, test_data, and expected_result must always be plain text strings - never objects, arrays, or nested JSON, and never left empty.
+- steps must be a list of at least 3 plain text strings. Do not include "Step 1", "Step 2" etc.
+- source_traceability must never be left empty. Default: "Source: requirement".
+- No comments, no trailing commas.
+
+Worked example (UNRELATED DOMAIN - structure only):
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "coverage_area": "Amendment or modification of an existing record",
+      "title": "User successfully submits an update request for an existing record",
+      "priority": "High",
+      "test_type": "Positive",
+      "preconditions": "An existing record is available to be updated",
+      "test_data": "Valid new values for the fields to be updated",
+      "steps": [
+        "Open the entry screen",
+        "Select the Update action",
+        "Enter the new values for the fields to be changed",
+        "Submit the update request",
+        "Verify the confirmation is displayed"
+      ],
+      "expected_result": "The update request is submitted successfully and routed to the relevant team for processing.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    },
+    {
+      "test_case_id": "TC002",
+      "requirement_id": "REQ001",
+      "coverage_area": "Amendment or modification of an existing record",
+      "title": "User successfully submits a delete request and confirms deletion",
+      "priority": "High",
+      "test_type": "Positive",
+      "preconditions": "An existing record is available to be deleted",
+      "test_data": "The record identifier for the record to be deleted",
+      "steps": [
+        "Open the entry screen",
+        "Select the Delete action",
+        "Select the record to be deleted",
+        "Check the confirmation checkbox",
+        "Submit the delete request"
+      ],
+      "expected_result": "The delete request is submitted successfully and the record is queued for removal.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    },
+    {
+      "test_case_id": "TC003",
+      "requirement_id": "REQ001",
+      "coverage_area": "Replacement or reissue of an existing record",
+      "title": "An existing record is replaced and the new record is linked back to the original",
+      "priority": "High",
+      "test_type": "Positive",
+      "preconditions": "An existing record requires full replacement rather than amendment",
+      "test_data": "Existing record identifier and corrected replacement details",
+      "steps": [
+        "Open the entry screen",
+        "Select the Replace action",
+        "Enter the corrected details for the replacement record",
+        "Submit the replacement request"
+      ],
+      "expected_result": "A replacement record is created, the original is marked as replaced, and both are linked.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    }
+  ]
+}
+
+Return valid JSON only. No markdown, no explanation, no notes - output must start with { and end with }.

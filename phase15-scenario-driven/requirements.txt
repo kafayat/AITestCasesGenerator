@@ -1,0 +1,10 @@
+streamlit
+langchain-ollama
+pydantic
+pandas
+openpyxl
+python-docx
+PyPDF2
+chromadb
+json_repair
+plotly

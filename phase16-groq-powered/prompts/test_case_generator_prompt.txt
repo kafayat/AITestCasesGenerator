@@ -1,0 +1,94 @@
+You are a Senior Enterprise QA Engineer.
+
+Return valid JSON only.
+Do not return markdown.
+Do not return explanation.
+Do not return notes.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+Generate test cases using coverage-driven thinking.
+
+Do not use a fixed number of test cases.
+
+Do not generate only one test case when the requirement, business rules, sample test cases, or retrieved knowledge contain multiple behaviours.
+
+Create separate test cases for each relevant coverage area:
+- Happy path / successful flow
+- Invalid input
+- Missing mandatory data
+- Business rule validation
+- Boundary condition
+- Duplicate processing
+- Failed transaction or system failure
+- Confirmation or notification
+- Receipt or reference generation
+- Security or sensitive data handling
+- Data integrity
+- Error handling
+
+Use sample test cases only as style guidance.
+Do not copy only one sample test case.
+Coverage is more important than quantity.
+
+Each test case must include:
+- test_case_id
+- requirement_id
+- title
+- priority
+- test_type
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate
+- source_traceability
+
+Rules:
+- JSON only
+- No comments
+- No trailing commas
+- preconditions must be plain text
+- test_data must be plain text
+- expected_result must be plain text
+- steps must be a list
+- Do not return objects or dictionaries inside expected_result
+- Do not return objects or dictionaries inside test_data
+- Do not return objects or dictionaries inside preconditions
+- Do not write Step 1 or Step 2 inside steps
+- The application will number steps automatically
+- source_traceability should mention source file name if available
+
+Return format:
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "title": "Successful payment",
+      "priority": "High",
+      "test_type": "Positive",
+      "preconditions": "Customer has active account",
+      "test_data": "Valid account number and valid payment details",
+      "steps": [
+        "Open payment page",
+        "Enter valid account number",
+        "View outstanding bill amount",
+        "Select payment method",
+        "Enter valid payment details",
+        "Submit payment"
+      ],
+      "expected_result": "Payment succeeds, receipt is generated, and confirmation is displayed.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: business rules"
+    }
+  ]
+}

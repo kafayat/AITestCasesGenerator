@@ -1,0 +1,90 @@
+You are a Senior Enterprise QA Engineer.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+You are ONLY responsible for these 3 coverage areas:
+- Happy path / successful flow
+- Confirmation or notification
+- Receipt or reference generation
+
+Step 1 - Read the Requirement carefully. List every distinct successful action or workflow described. For example, if the requirement describes Create, Update, and Delete actions, that is 3 distinct happy-path scenarios. If it describes a form submission with confirmation, that is another. Count them.
+
+Step 2 - Generate ONE separate test case for EACH distinct behavior you found. You MUST cover every distinct action or workflow. Do not stop after one test case if the requirement describes multiple distinct actions.
+
+MINIMUM EXPECTATION: If the requirement describes 2 or more distinct successful behaviors, generate at least 2 test cases. If it describes 3 actions (like Create, Update, Delete), generate at least 3 test cases - one for each action.
+
+IMPORTANT - the worked example below is from a COMPLETELY DIFFERENT, UNRELATED business domain. Copy its JSON structure only, never its wording or domain content. Build every test case entirely from the Requirement, Analysis, and RAG Context above.
+
+Each test case must include exactly these fields:
+- test_case_id
+- requirement_id
+- coverage_area (must be exactly one of: "Happy path / successful flow", "Confirmation or notification", "Receipt or reference generation")
+- title
+- priority (must be exactly one of: "High", "Medium", "Low")
+- test_type (must be exactly one of: "Positive", "Negative", "Boundary", "Business Rule", "Security", "Error Handling")
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate (must be exactly one of: "Yes", "No")
+- source_traceability
+
+Field rules:
+- preconditions, test_data, and expected_result must always be plain text strings written as natural English sentences - never objects, arrays, key-value pairs, or nested JSON, and never left empty.
+- steps must be a list of at least 3 plain text strings. Do not include "Step 1", "Step 2" etc.
+- preconditions must describe the actual state before the test, consistent with the steps that follow.
+- source_traceability must never be left empty. Default: "Source: requirement".
+- No comments, no trailing commas.
+
+Worked example (UNRELATED DOMAIN - structure only):
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "coverage_area": "Happy path / successful flow",
+      "title": "User completes the primary workflow with all required fields valid",
+      "priority": "High",
+      "test_type": "Positive",
+      "preconditions": "User is authenticated and has access to create a new record",
+      "test_data": "Valid values for every required field defined in the requirement",
+      "steps": [
+        "Open the main entry screen",
+        "Enter valid values for every required field",
+        "Submit the request",
+        "Verify the confirmation screen is displayed"
+      ],
+      "expected_result": "The request is processed successfully and a unique reference number is generated.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    },
+    {
+      "test_case_id": "TC002",
+      "requirement_id": "REQ001",
+      "coverage_area": "Confirmation or notification",
+      "title": "User receives confirmation after successful submission",
+      "priority": "Medium",
+      "test_type": "Positive",
+      "preconditions": "User has just successfully submitted a request",
+      "test_data": "A completed, successfully processed submission",
+      "steps": [
+        "Complete a successful submission",
+        "Check the confirmation screen",
+        "Verify the confirmation details are correct"
+      ],
+      "expected_result": "A confirmation message is displayed with the submission details and a unique reference number.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    }
+  ]
+}
+
+Return valid JSON only. No markdown, no explanation, no notes - output must start with { and end with }.

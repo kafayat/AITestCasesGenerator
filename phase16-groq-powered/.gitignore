@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+env/
+
+# App-generated data (regenerated at runtime, shouldn't be committed)
+cache/*.json
+outputs/*.json
+outputs/*.docx
+outputs/*.xlsx
+outputs/*.txt
+outputs/*.md
+vector_store/
+
+# Knowledge base content uploaded by users (project-specific, not source code)
+knowledge_base/requirements/*.txt
+knowledge_base/business_rules/*.txt
+knowledge_base/sample_test_cases/*.txt
+knowledge_base/standards/*.txt
+knowledge_base/defects/*.txt
+knowledge_base/api_docs/*.txt
+
+# OS / editor noise
+.DS_Store
+.vscode/
+*.swp
+
+# Secrets (if Azure/OpenAI keys are ever added to a .env)
+.env

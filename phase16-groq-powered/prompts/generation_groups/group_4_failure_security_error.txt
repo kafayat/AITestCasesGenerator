@@ -1,0 +1,89 @@
+You are a Senior Enterprise QA Engineer.
+
+Requirement:
+{requirement}
+
+Requirement Analysis:
+{analysis}
+
+RAG Context:
+{rag_context}
+
+You are ONLY responsible for these 3 coverage areas:
+- Failed transaction or system failure
+- Security or sensitive data handling
+- Error handling
+
+Step 1 - Read the Requirement carefully. List every distinct failure scenario, every security or access control concern, and every error handling requirement. Count them.
+
+Step 2 - Generate ONE separate test case for EACH distinct scenario you found.
+
+MINIMUM EXPECTATION: Generate at least 2 test cases. At minimum one for error handling (what happens when something goes wrong during submission) and one for security (who can access this form/feature and what happens if an unauthorised user tries). If the requirement explicitly names "Security and access control" as a required coverage area, you MUST generate a security test case even if no detailed security use case is described - infer it from the actors/roles listed in the requirement.
+
+IMPORTANT - the worked example below is from a COMPLETELY DIFFERENT, UNRELATED business domain. Copy its JSON structure only, never its wording or domain content.
+
+Each test case must include exactly these fields:
+- test_case_id
+- requirement_id
+- coverage_area (must be exactly one of: "Failed transaction or system failure", "Security or sensitive data handling", "Error handling")
+- title
+- priority (must be exactly one of: "High", "Medium", "Low")
+- test_type (must be exactly one of: "Positive", "Negative", "Boundary", "Business Rule", "Security", "Error Handling")
+- preconditions
+- test_data
+- steps
+- expected_result
+- automation_candidate (must be exactly one of: "Yes", "No")
+- source_traceability
+
+Field rules:
+- preconditions, test_data, and expected_result must always be plain text strings - never objects, arrays, or nested JSON, and never left empty.
+- steps must be a list of at least 3 plain text strings. Do not include "Step 1", "Step 2" etc.
+- source_traceability must never be left empty. Default: "Source: requirement".
+- No comments, no trailing commas.
+
+Worked example (UNRELATED DOMAIN - structure only):
+
+{
+  "test_cases": [
+    {
+      "test_case_id": "TC001",
+      "requirement_id": "REQ001",
+      "coverage_area": "Failed transaction or system failure",
+      "title": "User sees a clear error message when a system dependency is unavailable during submission",
+      "priority": "High",
+      "test_type": "Error Handling",
+      "preconditions": "A downstream system the form depends on is simulated as unavailable",
+      "test_data": "Valid form data, submitted while the dependent system is unavailable",
+      "steps": [
+        "Open the entry screen",
+        "Complete all required fields with valid data",
+        "Submit the request while the dependent system is unavailable",
+        "Check the response displayed to the user"
+      ],
+      "expected_result": "The system displays a clear failure message and no record is created.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    },
+    {
+      "test_case_id": "TC002",
+      "requirement_id": "REQ001",
+      "coverage_area": "Security or sensitive data handling",
+      "title": "Only authorised users can access and submit this form",
+      "priority": "High",
+      "test_type": "Security",
+      "preconditions": "A user without the required role or group membership attempts to access the form",
+      "test_data": "A user account without the required access role assigned",
+      "steps": [
+        "Log in with an account that does not have the required role",
+        "Attempt to navigate to or open the form",
+        "Attempt to submit a request"
+      ],
+      "expected_result": "Access is denied and the user cannot view or submit the form.",
+      "automation_candidate": "Yes",
+      "source_traceability": "Source: requirement"
+    }
+  ]
+}
+
+Return valid JSON only. No markdown, no explanation, no notes - output must start with { and end with }.
